@@ -502,7 +502,7 @@ needVip  tinyint  default 0  not null comment '仅会员可见（1 表示仅会�
 实现基础功能的 SQL 如下：
 
 ```sql
-▼sql复制代码-- 题库题目表（硬删除）
+-- 题库题目表（硬删除）
 create table if not exists question_bank_question
 (
     id             bigint auto_increment comment 'id' primary key,
