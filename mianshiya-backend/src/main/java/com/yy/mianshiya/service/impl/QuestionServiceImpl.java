@@ -12,7 +12,6 @@ import com.yy.mianshiya.exception.ThrowUtils;
 import com.yy.mianshiya.mapper.QuestionMapper;
 import com.yy.mianshiya.model.dto.question.QuestionQueryRequest;
 import com.yy.mianshiya.model.entity.Question;
-
 import com.yy.mianshiya.model.entity.QuestionBankQuestion;
 import com.yy.mianshiya.model.entity.User;
 import com.yy.mianshiya.model.vo.QuestionVO;
@@ -29,7 +28,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,7 +36,7 @@ import java.util.stream.Collectors;
 /**
  * 题目信息服务实现
  *
- *  @author YY 
+ * @author YY
  */
 @Service
 @Slf4j
@@ -124,9 +122,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         queryWrapper.eq(ObjectUtils.isNotEmpty(id), "id", id);
         queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId);
         // 排序规则
-        queryWrapper.orderBy(SqlUtils.validSortField(sortField),
-                sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
-                sortField);
+        queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC), sortField);
         return queryWrapper;
     }
 
@@ -179,8 +175,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         // region 可选
         // 1. 关联查询用户信息
         Set<Long> userIdSet = questionList.stream().map(Question::getUserId).collect(Collectors.toSet());
-        Map<Long, List<User>> userIdUserListMap = userService.listByIds(userIdSet).stream()
-                .collect(Collectors.groupingBy(User::getId));
+        Map<Long, List<User>> userIdUserListMap = userService.listByIds(userIdSet).stream().collect(Collectors.groupingBy(User::getId));
         // 填充信息
         questionVOList.forEach(questionVO -> {
             Long userId = questionVO.getUserId();
@@ -211,15 +206,11 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         Long questionBankId = questionQueryRequest.getQuestionBankId();
         if (questionBankId != null) {
             // 查询题库内的题目 id
-            LambdaQueryWrapper<QuestionBankQuestion> lambdaQueryWrapper = Wrappers.lambdaQuery(QuestionBankQuestion.class)
-                    .select(QuestionBankQuestion::getQuestionId)
-                    .eq(QuestionBankQuestion::getQuestionBankId, questionBankId);
+            LambdaQueryWrapper<QuestionBankQuestion> lambdaQueryWrapper = Wrappers.lambdaQuery(QuestionBankQuestion.class).select(QuestionBankQuestion::getQuestionId).eq(QuestionBankQuestion::getQuestionBankId, questionBankId);
             List<QuestionBankQuestion> questionList = questionBankQuestionService.list(lambdaQueryWrapper);
             if (CollUtil.isNotEmpty(questionList)) {
                 // 取出题目 id 集合
-                Set<Long> questionIdSet = questionList.stream()
-                        .map(QuestionBankQuestion::getQuestionId)
-                        .collect(Collectors.toSet());
+                Set<Long> questionIdSet = questionList.stream().map(QuestionBankQuestion::getQuestionId).collect(Collectors.toSet());
                 // 复用原有题目表的查询条件
                 queryWrapper.in("id", questionIdSet);
             } else {

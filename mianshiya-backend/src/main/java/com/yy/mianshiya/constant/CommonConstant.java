@@ -3,7 +3,7 @@ package com.yy.mianshiya.constant;
 /**
  * 通用常量
  *
- *  @author YY
+ * @author YY
  */
 public interface CommonConstant {
 
@@ -16,5 +16,5 @@ public interface CommonConstant {
      * 降序
      */
     String SORT_ORDER_DESC = " descend";
-    
+
 }

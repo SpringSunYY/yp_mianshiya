@@ -15,7 +15,7 @@ import java.io.Writer;
 /**
  * 代码生成器
  *
- *  @author YY 
+ * @author YY
  */
 public class CodeGenerator {
 

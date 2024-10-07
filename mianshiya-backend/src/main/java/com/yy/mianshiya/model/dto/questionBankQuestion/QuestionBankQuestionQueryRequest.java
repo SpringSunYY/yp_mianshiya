@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * 查询题库题目关联请求
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a> 
+ * @author YY
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

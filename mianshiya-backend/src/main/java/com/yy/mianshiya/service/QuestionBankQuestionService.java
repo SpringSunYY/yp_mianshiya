@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 题目题库服务
  *
- *  @author YY 
+ * @author YY
  */
 public interface QuestionBankQuestionService extends IService<QuestionBankQuestion> {
 
@@ -20,7 +20,7 @@ public interface QuestionBankQuestionService extends IService<QuestionBankQuesti
      * 校验数据
      *
      * @param questionBankQuestion
-     * @param add 对创建的数据进行校验
+     * @param add                  对创建的数据进行校验
      */
     void validQuestionBankQuestion(QuestionBankQuestion questionBankQuestion, boolean add);
 
@@ -31,7 +31,7 @@ public interface QuestionBankQuestionService extends IService<QuestionBankQuesti
      * @return
      */
     QueryWrapper<QuestionBankQuestion> getQueryWrapper(QuestionBankQuestionQueryRequest questionBankQuestionQueryRequest);
-    
+
     /**
      * 获取题目题库封装
      *

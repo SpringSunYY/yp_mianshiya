@@ -3,8 +3,7 @@ package com.yy.mianshiya.wxmp;
 /**
  * 微信公众号相关常量
  *
- *  @author YY
- 
+ * @author YY
  **/
 public class WxMpConstant {
 

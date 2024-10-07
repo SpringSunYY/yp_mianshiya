@@ -1,13 +1,14 @@
 package com.yy.mianshiya.common;
 
 import java.io.Serializable;
+
 import lombok.Data;
 
 /**
  * 通用返回类
  *
  * @param <T>
- *  @author YY
+ * @author YY
  */
 @Data
 public class BaseResponse<T> implements Serializable {

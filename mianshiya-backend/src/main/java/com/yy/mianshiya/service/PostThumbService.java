@@ -1,7 +1,7 @@
 package com.yy.mianshiya.service;
 
-import com.yy.mianshiya.model.entity.PostThumb;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yy.mianshiya.model.entity.PostThumb;
 import com.yy.mianshiya.model.entity.User;
 
 /**

@@ -1,12 +1,14 @@
 package com.yy.mianshiya.controller;
 
 import com.yy.mianshiya.wxmp.WxMpConstant;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
@@ -25,8 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 微信公众号相关接口
  *
- *  @author YY
- 
+ * @author YY
  **/
 @RestController
 @RequestMapping("/")

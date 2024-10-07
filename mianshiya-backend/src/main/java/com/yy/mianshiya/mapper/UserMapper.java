@@ -6,7 +6,7 @@ import com.yy.mianshiya.model.entity.User;
 /**
  * 用户数据库操作
  *
- *  @author YY
+ * @author YY
  */
 public interface UserMapper extends BaseMapper<User> {
 

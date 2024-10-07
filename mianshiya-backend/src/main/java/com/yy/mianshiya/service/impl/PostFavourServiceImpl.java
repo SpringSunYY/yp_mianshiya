@@ -13,10 +13,11 @@ import com.yy.mianshiya.model.entity.PostFavour;
 import com.yy.mianshiya.model.entity.User;
 import com.yy.mianshiya.service.PostFavourService;
 import com.yy.mianshiya.service.PostService;
-import javax.annotation.Resource;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 
 /**
  * 帖子收藏服务实现

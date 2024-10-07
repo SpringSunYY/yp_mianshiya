@@ -2,6 +2,7 @@ package com.yy.mianshiya.aop;
 
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,8 +17,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 /**
  * 请求响应日志 AOP
  *
- *  @author YY
- 
+ * @author YY
  **/
 @Aspect
 @Component

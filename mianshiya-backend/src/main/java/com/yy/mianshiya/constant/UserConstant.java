@@ -3,7 +3,7 @@ package com.yy.mianshiya.constant;
 /**
  * 用户常量
  *
- *  @author YY
+ * @author YY
  */
 public interface UserConstant {
 

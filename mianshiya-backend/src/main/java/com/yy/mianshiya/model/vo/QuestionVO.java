@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 题目视图
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a> 
+ * @author YY
  */
 @Data
 public class QuestionVO implements Serializable {

@@ -3,7 +3,7 @@ package com.yy.mianshiya.common;
 /**
  * 返回工具类
  *
- *  @author YY
+ * @author YY
  */
 public class ResultUtils {
 

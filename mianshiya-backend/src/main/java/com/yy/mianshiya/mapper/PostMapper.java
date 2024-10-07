@@ -2,13 +2,14 @@ package com.yy.mianshiya.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yy.mianshiya.model.entity.Post;
+
 import java.util.Date;
 import java.util.List;
 
 /**
  * 帖子数据库操作
  *
- *  @author YY
+ * @author YY
  */
 public interface PostMapper extends BaseMapper<Post> {
 

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 更新题目请求
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a> 
+ * @author YY
  */
 @Data
 public class QuestionUpdateRequest implements Serializable {

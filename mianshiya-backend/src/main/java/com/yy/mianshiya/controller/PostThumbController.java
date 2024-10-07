@@ -8,8 +8,10 @@ import com.yy.mianshiya.model.dto.postthumb.PostThumbAddRequest;
 import com.yy.mianshiya.model.entity.User;
 import com.yy.mianshiya.service.PostThumbService;
 import com.yy.mianshiya.service.UserService;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 帖子点赞接口
  *
- *  @author YY
+ * @author YY
  */
 @RestController
 @RequestMapping("/post_thumb")
@@ -41,7 +43,7 @@ public class PostThumbController {
      */
     @PostMapping("/")
     public BaseResponse<Integer> doThumb(@RequestBody PostThumbAddRequest postThumbAddRequest,
-            HttpServletRequest request) {
+                                         HttpServletRequest request) {
         if (postThumbAddRequest == null || postThumbAddRequest.getPostId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }

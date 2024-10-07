@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 题库题目关联视图
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a> 
+ * @author YY
  */
 @Data
 public class QuestionBankQuestionVO implements Serializable {

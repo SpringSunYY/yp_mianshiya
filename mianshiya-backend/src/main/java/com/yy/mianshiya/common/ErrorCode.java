@@ -3,7 +3,7 @@ package com.yy.mianshiya.common;
 /**
  * 自定义错误码
  *
- *  @author YY
+ * @author YY
  */
 public enum ErrorCode {
 

@@ -1,7 +1,5 @@
 package com.yy.mianshiya.service.impl;
 
-import static com.yy.mianshiya.constant.UserConstant.USER_LOGIN_STATE;
-
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,16 +14,19 @@ import com.yy.mianshiya.model.vo.LoginUserVO;
 import com.yy.mianshiya.model.vo.UserVO;
 import com.yy.mianshiya.service.UserService;
 import com.yy.mianshiya.utils.SqlUtils;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.yy.mianshiya.constant.UserConstant.USER_LOGIN_STATE;
 
 /**
  * 用户服务实现

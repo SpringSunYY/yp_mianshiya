@@ -3,7 +3,9 @@ package com.yy.mianshiya.wxmp;
 import com.yy.mianshiya.wxmp.handler.EventHandler;
 import com.yy.mianshiya.wxmp.handler.MessageHandler;
 import com.yy.mianshiya.wxmp.handler.SubscribeHandler;
+
 import javax.annotation.Resource;
+
 import me.chanjar.weixin.common.api.WxConsts.EventType;
 import me.chanjar.weixin.common.api.WxConsts.XmlMsgType;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
@@ -14,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * 微信公众号路由
  *
- *  @author YY
+ * @author YY
  */
 @Configuration
 public class WxMpMsgRouter {

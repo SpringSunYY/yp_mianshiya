@@ -4,10 +4,12 @@ import com.yy.mianshiya.esdao.PostEsDao;
 import com.yy.mianshiya.mapper.PostMapper;
 import com.yy.mianshiya.model.dto.post.PostEsDTO;
 import com.yy.mianshiya.model.entity.Post;
+
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+
 import lombok.extern.slf4j.Slf4j;
 import cn.hutool.core.collection.CollUtil;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,7 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 /**
  * 增量同步帖子到 es
  *
- *  @author YY
+ * @author YY
  */
 // todo 取消注释开启任务
 //@Component

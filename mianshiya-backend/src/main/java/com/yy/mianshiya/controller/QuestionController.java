@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 题目信息接口
  *
- *  @author YY 
+ * @author YY
  */
 @RestController
 @RequestMapping("/question")

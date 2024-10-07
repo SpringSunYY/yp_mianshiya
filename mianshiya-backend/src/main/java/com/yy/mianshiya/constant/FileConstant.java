@@ -3,7 +3,7 @@ package com.yy.mianshiya.constant;
 /**
  * 文件常量
  *
- *  @author YY
+ * @author YY
  */
 public interface FileConstant {
 

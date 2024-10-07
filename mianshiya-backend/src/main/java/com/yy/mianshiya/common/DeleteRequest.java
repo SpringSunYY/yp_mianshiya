@@ -1,12 +1,13 @@
 package com.yy.mianshiya.common;
 
 import java.io.Serializable;
+
 import lombok.Data;
 
 /**
  * 删除请求
  *
- *  @author YY
+ * @author YY
  */
 @Data
 public class DeleteRequest implements Serializable {

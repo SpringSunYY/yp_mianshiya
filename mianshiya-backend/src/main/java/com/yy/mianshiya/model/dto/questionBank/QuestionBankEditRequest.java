@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * 编辑题库请求
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a> 
+ * @author YY
  */
 @Data
 public class QuestionBankEditRequest implements Serializable {
