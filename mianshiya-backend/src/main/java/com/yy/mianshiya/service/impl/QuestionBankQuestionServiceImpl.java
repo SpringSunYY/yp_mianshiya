@@ -99,7 +99,7 @@ public class    QuestionBankQuestionServiceImpl extends ServiceImpl<QuestionBank
         if (questionBankQuestionQueryRequest == null) {
             return queryWrapper;
         }
-        // todo 从对象中取值
+        // 从对象中取值
         Long id = questionBankQuestionQueryRequest.getId();
         Long notId = questionBankQuestionQueryRequest.getNotId();
         String sortField = questionBankQuestionQueryRequest.getSortField();
@@ -107,7 +107,7 @@ public class    QuestionBankQuestionServiceImpl extends ServiceImpl<QuestionBank
         Long questionBankId = questionBankQuestionQueryRequest.getQuestionBankId();
         Long questionId = questionBankQuestionQueryRequest.getQuestionId();
         Long userId = questionBankQuestionQueryRequest.getUserId();
-        // todo 补充需要的查询条件
+        // 补充需要的查询条件
         // 精确查询
         queryWrapper.ne(ObjectUtils.isNotEmpty(notId), "id", notId);
         queryWrapper.eq(ObjectUtils.isNotEmpty(id), "id", id);

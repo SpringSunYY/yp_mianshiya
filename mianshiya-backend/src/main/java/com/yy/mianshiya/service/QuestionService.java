@@ -49,4 +49,15 @@ public interface QuestionService extends IService<Question> {
      * @return
      */
     Page<QuestionVO> getQuestionVOPage(Page<Question> questionPage, HttpServletRequest request);
+
+    /**
+     * @description: 分页获取题目列表
+     * @author: YY
+     * @method: listQuestionByPage
+     * @date: 2024/10/8 20:31
+     * @param:
+     * @param: questionQueryRequest
+     * @return: com.baomidou.mybatisplus.extension.plugins.pagination.Page<com.yy.mianshiya.model.entity.Question>
+     **/
+    Page<Question> listQuestionByPage(QuestionQueryRequest questionQueryRequest);
 }

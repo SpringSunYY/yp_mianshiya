@@ -9,14 +9,18 @@ import com.yy.mianshiya.common.ResultUtils;
 import com.yy.mianshiya.constant.UserConstant;
 import com.yy.mianshiya.exception.BusinessException;
 import com.yy.mianshiya.exception.ThrowUtils;
+import com.yy.mianshiya.model.dto.question.QuestionQueryRequest;
 import com.yy.mianshiya.model.dto.questionBank.QuestionBankAddRequest;
 import com.yy.mianshiya.model.dto.questionBank.QuestionBankEditRequest;
 import com.yy.mianshiya.model.dto.questionBank.QuestionBankQueryRequest;
 import com.yy.mianshiya.model.dto.questionBank.QuestionBankUpdateRequest;
+import com.yy.mianshiya.model.entity.Question;
 import com.yy.mianshiya.model.entity.QuestionBank;
 import com.yy.mianshiya.model.entity.User;
 import com.yy.mianshiya.model.vo.QuestionBankVO;
+import com.yy.mianshiya.model.vo.QuestionVO;
 import com.yy.mianshiya.service.QuestionBankService;
+import com.yy.mianshiya.service.QuestionService;
 import com.yy.mianshiya.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -39,8 +43,10 @@ public class QuestionBankController {
     private QuestionBankService questionBankService;
 
     @Resource
-    private UserService userService;
+    private QuestionService questionService;
 
+    @Resource
+    private UserService userService;
     // region 增删改查
 
     /**
@@ -124,19 +130,56 @@ public class QuestionBankController {
     }
 
     /**
-     * 根据 id 获取题库信息（封装类）
+     * 根据 id 获取题库（封装类）
      *
-     * @param id
+     * @param questionBankQueryRequest
      * @return
      */
     @GetMapping("/get/vo")
-    public BaseResponse<QuestionBankVO> getQuestionBankVOById(long id, HttpServletRequest request) {
-        ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
-        // 查询数据库
-        QuestionBank questionBank = questionBankService.getById(id);
-        ThrowUtils.throwIf(questionBank == null, ErrorCode.NOT_FOUND_ERROR);
-        // 获取封装类
-        return ResultUtils.success(questionBankService.getQuestionBankVO(questionBank, request));
+    public BaseResponse<QuestionBankVO> getQuestionBankVOById(QuestionBankQueryRequest questionBankQueryRequest, HttpServletRequest request) {
+        {
+            ThrowUtils.throwIf(questionBankQueryRequest == null, ErrorCode.PARAMS_ERROR);
+            Long id = questionBankQueryRequest.getId();
+            ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
+
+            // todo 取消注释开启 HotKey（须确保 HotKey 依赖被打进 jar 包）
+//        // 生成 key
+//        String key = "bank_detail_" + id;
+//        // 如果是热 key
+//        if (JdHotKeyStore.isHotKey(key)) {
+//            // 从本地缓存中获取缓存值
+//            Object cachedQuestionBankVO = JdHotKeyStore.get(key);
+//            if (cachedQuestionBankVO != null) {
+//                // 如果缓存中有值，直接返回缓存的值
+//                return ResultUtils.success((QuestionBankVO) cachedQuestionBankVO);
+//            }
+//        }
+
+            // 查询数据库
+            QuestionBank questionBank = questionBankService.getById(id);
+            ThrowUtils.throwIf(questionBank == null, ErrorCode.NOT_FOUND_ERROR);
+            // 查询题库封装类
+            QuestionBankVO questionBankVO = questionBankService.getQuestionBankVO(questionBank, request);
+            // 是否要关联查询题库下的题目列表
+            boolean needQueryQuestionList = questionBankQueryRequest.isNeedQueryQuestionList();
+            if (needQueryQuestionList) {
+                QuestionQueryRequest questionQueryRequest = new QuestionQueryRequest();
+                questionQueryRequest.setQuestionBankId(id);
+                // 可以按需支持更多的题目搜索参数，比如分页
+                questionQueryRequest.setPageSize(questionBankQueryRequest.getPageSize());
+                questionQueryRequest.setCurrent(questionBankQueryRequest.getCurrent());
+                Page<Question> questionPage = questionService.listQuestionByPage(questionQueryRequest);
+                Page<QuestionVO> questionVOPage = questionService.getQuestionVOPage(questionPage, request);
+                questionBankVO.setQuestionPage(questionVOPage);
+            }
+
+            // todo 取消注释开启 HotKey（须确保 HotKey 依赖被打进 jar 包）
+//        // 设置本地缓存（如果不是热 key，这个方法不会设置缓存）
+//        JdHotKeyStore.smartSet(key, questionBankVO);
+
+            // 获取封装类
+            return ResultUtils.success(questionBankVO);
+        }
     }
 
     /**
@@ -147,7 +190,8 @@ public class QuestionBankController {
      */
     @PostMapping("/list/page")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Page<QuestionBank>> listQuestionBankByPage(@RequestBody QuestionBankQueryRequest questionBankQueryRequest) {
+    public BaseResponse<Page<QuestionBank>> listQuestionBankByPage(@RequestBody QuestionBankQueryRequest
+                                                                           questionBankQueryRequest) {
         long current = questionBankQueryRequest.getCurrent();
         long size = questionBankQueryRequest.getPageSize();
         // 查询数据库
@@ -164,7 +208,8 @@ public class QuestionBankController {
      * @return
      */
     @PostMapping("/list/page/vo")
-    public BaseResponse<Page<QuestionBankVO>> listQuestionBankVOByPage(@RequestBody QuestionBankQueryRequest questionBankQueryRequest,
+    public BaseResponse<Page<QuestionBankVO>> listQuestionBankVOByPage(@RequestBody QuestionBankQueryRequest
+                                                                               questionBankQueryRequest,
                                                                        HttpServletRequest request) {
         long current = questionBankQueryRequest.getCurrent();
         long size = questionBankQueryRequest.getPageSize();
@@ -185,7 +230,8 @@ public class QuestionBankController {
      * @return
      */
     @PostMapping("/my/list/page/vo")
-    public BaseResponse<Page<QuestionBankVO>> listMyQuestionBankVOByPage(@RequestBody QuestionBankQueryRequest questionBankQueryRequest,
+    public BaseResponse<Page<QuestionBankVO>> listMyQuestionBankVOByPage(@RequestBody QuestionBankQueryRequest
+                                                                                 questionBankQueryRequest,
                                                                          HttpServletRequest request) {
         ThrowUtils.throwIf(questionBankQueryRequest == null, ErrorCode.PARAMS_ERROR);
         // 补充查询条件，只查询当前登录用户的数据
@@ -210,7 +256,9 @@ public class QuestionBankController {
      * @return
      */
     @PostMapping("/edit")
-    public BaseResponse<Boolean> editQuestionBank(@RequestBody QuestionBankEditRequest questionBankEditRequest, HttpServletRequest request) {
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> editQuestionBank(@RequestBody QuestionBankEditRequest
+                                                          questionBankEditRequest, HttpServletRequest request) {
         if (questionBankEditRequest == null || questionBankEditRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }

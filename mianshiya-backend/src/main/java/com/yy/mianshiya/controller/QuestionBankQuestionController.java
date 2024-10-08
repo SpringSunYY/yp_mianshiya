@@ -1,5 +1,7 @@
 package com.yy.mianshiya.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yy.mianshiya.annotation.AuthCheck;
 import com.yy.mianshiya.common.BaseResponse;
@@ -11,6 +13,7 @@ import com.yy.mianshiya.exception.BusinessException;
 import com.yy.mianshiya.exception.ThrowUtils;
 import com.yy.mianshiya.model.dto.questionBankQuestion.QuestionBankQuestionAddRequest;
 import com.yy.mianshiya.model.dto.questionBankQuestion.QuestionBankQuestionQueryRequest;
+import com.yy.mianshiya.model.dto.questionBankQuestion.QuestionBankQuestionRemoveRequest;
 import com.yy.mianshiya.model.dto.questionBankQuestion.QuestionBankQuestionUpdateRequest;
 import com.yy.mianshiya.model.entity.QuestionBankQuestion;
 import com.yy.mianshiya.model.entity.User;
@@ -50,6 +53,7 @@ public class QuestionBankQuestionController {
      * @return
      */
     @PostMapping("/add")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Long> addQuestionBankQuestion(@RequestBody QuestionBankQuestionAddRequest questionBankQuestionAddRequest, HttpServletRequest request) {
         ThrowUtils.throwIf(questionBankQuestionAddRequest == null, ErrorCode.PARAMS_ERROR);
         // todo 在此处将实体类和 DTO 进行转换
@@ -76,6 +80,7 @@ public class QuestionBankQuestionController {
      * @return
      */
     @PostMapping("/delete")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Boolean> deleteQuestionBankQuestion(@RequestBody DeleteRequest deleteRequest, HttpServletRequest request) {
         if (deleteRequest == null || deleteRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -209,6 +214,7 @@ public class QuestionBankQuestionController {
      * @return
      */
     @PostMapping("/edit")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Boolean> editQuestionBankQuestion(@RequestBody QuestionBankQuestionUpdateRequest questionBankQuestionEditRequest, HttpServletRequest request) {
         if (questionBankQuestionEditRequest == null || questionBankQuestionEditRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -234,4 +240,28 @@ public class QuestionBankQuestionController {
     }
 
     // endregion
+
+    /**
+     * 移除题库题目关联（仅管理员可用）
+     *
+     * @param questionBankQuestionRemoveRequest
+     * @return
+     */
+    @PostMapping("/remove")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> removeQuestionBankQuestion(
+            @RequestBody QuestionBankQuestionRemoveRequest questionBankQuestionRemoveRequest
+    ) {
+        // 参数校验
+        ThrowUtils.throwIf(questionBankQuestionRemoveRequest == null, ErrorCode.PARAMS_ERROR);
+        Long questionBankId = questionBankQuestionRemoveRequest.getQuestionBankId();
+        Long questionId = questionBankQuestionRemoveRequest.getQuestionId();
+        ThrowUtils.throwIf(questionBankId == null || questionId == null, ErrorCode.PARAMS_ERROR);
+        // 构造查询
+        LambdaQueryWrapper<QuestionBankQuestion> lambdaQueryWrapper = Wrappers.lambdaQuery(QuestionBankQuestion.class)
+                .eq(QuestionBankQuestion::getQuestionBankId, questionBankId)
+                .eq(QuestionBankQuestion::getQuestionId, questionId);
+        boolean result = questionBankQuestionService.remove(lambdaQueryWrapper);
+        return ResultUtils.success(result);
+    }
 }
