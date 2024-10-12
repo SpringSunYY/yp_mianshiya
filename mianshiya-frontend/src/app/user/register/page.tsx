@@ -8,7 +8,6 @@ import { userRegisterUsingPost } from "@/api/userController";
 import { message } from "antd";
 import { ProForm } from "@ant-design/pro-form/lib";
 import { useRouter } from "next/navigation";
-import './index.css';
 
 /**
  * 用户注册页面
