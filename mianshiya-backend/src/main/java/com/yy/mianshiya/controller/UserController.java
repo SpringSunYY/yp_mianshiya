@@ -300,7 +300,6 @@ public class UserController {
      *
      * @param userUpdateMyRequest
      * @param request
-     * @return
      */
     @PostMapping("/update/my")
     public BaseResponse<Boolean> updateMyUser(@RequestBody UserUpdateMyRequest userUpdateMyRequest,
@@ -315,5 +314,22 @@ public class UserController {
         boolean result = userService.updateById(user);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         return ResultUtils.success(true);
+    }
+
+    /**
+     * @description: 用户签到
+     * @author: YY
+     * @method: addUserSignIn
+     * @date: 2024/10/14 15:54
+     * @param:
+     * @param: request
+     * @return: com.yy.mianshiya.common.BaseResponse<java.lang.Boolean>
+     **/
+    @PostMapping("/add/sign_in")
+    public BaseResponse<Boolean> addUserSignIn(HttpServletRequest request) {
+        // 必须要登录才能签到
+        User loginUser = userService.getLoginUser(request);
+        boolean result = userService.addUserSignIn(loginUser.getId());
+        return ResultUtils.success(result);
     }
 }

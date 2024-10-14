@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 用户服务
  *
- *  @author YY
+ * @author YY
  */
 public interface UserService extends IService<User> {
 
@@ -118,4 +118,14 @@ public interface UserService extends IService<User> {
      */
     QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest);
 
+    /**
+     * @description: 用户签到
+     * @author: YY
+     * @method: addUserSignIn
+     * @date: 2024/10/14 15:50
+     * @param:
+     * @param: userId
+     * @return: boolean
+     **/
+    boolean addUserSignIn(long userId);
 }
