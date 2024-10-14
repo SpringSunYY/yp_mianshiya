@@ -9,7 +9,9 @@ import com.yy.mianshiya.model.vo.UserVO;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户服务
@@ -128,4 +130,17 @@ public interface UserService extends IService<User> {
      * @return: boolean
      **/
     boolean addUserSignIn(long userId);
+
+    /**
+     * @description: 获取某个用户年份的签到记录
+     * @author: YY
+     * @method: getUserSignInRecord
+     * @date: 2024/10/14 21:06
+     * @param:
+     * @param: userId
+     * @param: year
+     * @return: java.util.Map<java.time.LocalDate,java.lang.Boolean>
+     **/
+    List<Integer> getUserSignInRecord(long userId, Integer year);
+//    Map<LocalDate, Boolean> getUserSignInRecord(long userId, Integer year);
 }

@@ -49,6 +49,13 @@ const CalendarChart = (props: Props) => {
 
   // 图表配置
   const options = {
+    tooltip: {
+      // 设置 tooltip 的内容格式
+      formatter: function (params) {
+        // params.data[0] 是日期，params.data[1] 是值
+        return `${params.data[0]}`;
+      },
+    },
     visualMap: {
       show: false,
       min: 0,
@@ -63,9 +70,21 @@ const CalendarChart = (props: Props) => {
       left: 20,
       // 单元格自动宽度，高度为 16 像素
       cellSize: ["auto", 16],
+      itemStyle: {
+        borderWidth: 1, // 设置单元格边框宽度
+        borderColor: "#ffffff", // 设置单元格边框颜色为白色
+        color: "rgba(128,128,128,0.18)", // 设置单元格背景色为50%的灰色
+      },
       yearLabel: {
         position: "top",
         formatter: `${year} 年刷题记录`,
+      },
+      splitLine: {
+        // 设置分隔线属性
+        lineStyle: {
+          color: "#ffffff", // 修改边框颜色为白色
+          width: 4,
+        },
       },
     },
     series: {
