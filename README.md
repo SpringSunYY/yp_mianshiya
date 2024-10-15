@@ -7556,10 +7556,10 @@ PUT /question_v1
 所以，我们要执行的完整命令如下，可以放到后端项目目录中进行备份：
 
 ```json
- PUT /question_v1
+ PUT /msy_question_v1
 {
   "aliases": {
-    "question": {}
+    "msy_question": {}
   },
   "mappings": {
     "properties": {

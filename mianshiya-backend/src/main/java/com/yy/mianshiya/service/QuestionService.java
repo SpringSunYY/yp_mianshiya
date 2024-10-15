@@ -60,4 +60,15 @@ public interface QuestionService extends IService<Question> {
      * @return: com.baomidou.mybatisplus.extension.plugins.pagination.Page<com.yy.mianshiya.model.entity.Question>
      **/
     Page<Question> listQuestionByPage(QuestionQueryRequest questionQueryRequest);
+
+    /**
+     * @description: 从 ES 查询题目
+     * @author: YY
+     * @method: searchFromEs
+     * @date: 2024/10/15 22:09
+     * @param:
+     * @param: questionQueryRequest
+     * @return: com.baomidou.mybatisplus.extension.plugins.pagination.Page<com.yy.mianshiya.model.entity.Question>
+     **/
+    Page<Question> searchFromEs(QuestionQueryRequest questionQueryRequest);
 }

@@ -34,9 +34,9 @@ spring:
 #    password: 123456
   # Elasticsearch 配置
   #  需替换配置，然后取消注释
-#  elasticsearch:
-#    uris: http://localhost:9200
-#    username: root
+  elasticsearch:
+    uris: http://192.168.10.100:9200
+    username: root
 #    password: 123456
   # 文件上传
   servlet:
