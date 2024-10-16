@@ -11,14 +11,13 @@ import com.yy.mianshiya.common.ResultUtils;
 import com.yy.mianshiya.constant.UserConstant;
 import com.yy.mianshiya.exception.BusinessException;
 import com.yy.mianshiya.exception.ThrowUtils;
-import com.yy.mianshiya.model.dto.questionBankQuestion.QuestionBankQuestionAddRequest;
-import com.yy.mianshiya.model.dto.questionBankQuestion.QuestionBankQuestionQueryRequest;
-import com.yy.mianshiya.model.dto.questionBankQuestion.QuestionBankQuestionRemoveRequest;
-import com.yy.mianshiya.model.dto.questionBankQuestion.QuestionBankQuestionUpdateRequest;
+import com.yy.mianshiya.model.dto.question.QuestionBatchDeleteRequest;
+import com.yy.mianshiya.model.dto.questionBankQuestion.*;
 import com.yy.mianshiya.model.entity.QuestionBankQuestion;
 import com.yy.mianshiya.model.entity.User;
 import com.yy.mianshiya.model.vo.QuestionBankQuestionVO;
 import com.yy.mianshiya.service.QuestionBankQuestionService;
+import com.yy.mianshiya.service.QuestionService;
 import com.yy.mianshiya.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 题目题库接口
@@ -42,6 +42,9 @@ public class QuestionBankQuestionController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private QuestionService questionService;
 
     // region 增删改查
 
@@ -263,5 +266,35 @@ public class QuestionBankQuestionController {
                 .eq(QuestionBankQuestion::getQuestionId, questionId);
         boolean result = questionBankQuestionService.remove(lambdaQueryWrapper);
         return ResultUtils.success(result);
+    }
+
+    /**
+     * 批量从题库移除题目
+     *
+     * @param questionBankQuestionBatchRemoveRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/remove/batch")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> batchRemoveQuestionsFromBank(
+            @RequestBody QuestionBankQuestionBatchRemoveRequest questionBankQuestionBatchRemoveRequest,
+            HttpServletRequest request
+    ) {
+        // 参数校验
+        ThrowUtils.throwIf(questionBankQuestionBatchRemoveRequest == null, ErrorCode.PARAMS_ERROR);
+        Long questionBankId = questionBankQuestionBatchRemoveRequest.getQuestionBankId();
+        List<Long> questionIdList = questionBankQuestionBatchRemoveRequest.getQuestionIdList();
+        questionBankQuestionService.batchRemoveQuestionsFromBank(questionIdList, questionBankId);
+        return ResultUtils.success(true);
+    }
+
+    @PostMapping("/delete/batch")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> batchDeleteQuestions(@RequestBody QuestionBatchDeleteRequest questionBatchDeleteRequest,
+                                                      HttpServletRequest request) {
+        ThrowUtils.throwIf(questionBatchDeleteRequest == null, ErrorCode.PARAMS_ERROR);
+        questionService.batchDeleteQuestions(questionBatchDeleteRequest.getQuestionIdList());
+        return ResultUtils.success(true);
     }
 }
