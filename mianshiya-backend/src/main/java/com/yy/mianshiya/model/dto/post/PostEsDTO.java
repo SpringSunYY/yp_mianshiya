@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author  YY
  **/
-// todo 取消注释开启 ES（须先配置 ES）
+//  取消注释开启 ES（须先配置 ES）
 //@Document(indexName = "post")
 @Data
 public class PostEsDTO implements Serializable {

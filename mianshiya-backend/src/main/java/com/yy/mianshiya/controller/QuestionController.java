@@ -46,8 +46,6 @@ public class QuestionController {
     @Resource
     private UserService userService;
 
-    @Resource
-    private QuestionBankQuestionService questionBankQuestionService;
     // region 增删改查
 
     /**
@@ -69,7 +67,7 @@ public class QuestionController {
         }
         // 数据校验
         questionService.validQuestion(question, true);
-        // todo 填充默认值
+        //  填充默认值
         User loginUser = userService.getLoginUser(request);
         question.setUserId(loginUser.getId());
         // 写入数据库
@@ -261,27 +259,5 @@ public class QuestionController {
         ThrowUtils.throwIf(size > 200, ErrorCode.PARAMS_ERROR);
         Page<Question> questionPage = questionService.searchFromEs(questionQueryRequest);
         return ResultUtils.success(questionService.getQuestionVOPage(questionPage, request));
-    }
-
-    /**
-     * 批量插入题目至题库
-     *
-     * @param questionBankQuestionBatchAddRequest
-     * @param request
-     * @return
-     */
-    @PostMapping("/add/batch")
-    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Boolean> batchAddQuestionsToBank(
-            @RequestBody QuestionBankQuestionBatchAddRequest questionBankQuestionBatchAddRequest,
-            HttpServletRequest request
-    ) {
-        // 参数校验
-        ThrowUtils.throwIf(questionBankQuestionBatchAddRequest == null, ErrorCode.PARAMS_ERROR);
-        User loginUser = userService.getLoginUser(request);
-        Long questionBankId = questionBankQuestionBatchAddRequest.getQuestionBankId();
-        List<Long> questionIdList = questionBankQuestionBatchAddRequest.getQuestionIdList();
-        questionBankQuestionService.batchAddQuestionsToBank(questionIdList, questionBankId, loginUser);
-        return ResultUtils.success(true);
     }
 }

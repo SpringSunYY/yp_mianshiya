@@ -59,12 +59,12 @@ public class QuestionBankController {
     @PostMapping("/add")
     public BaseResponse<Long> addQuestionBank(@RequestBody QuestionBankAddRequest questionBankAddRequest, HttpServletRequest request) {
         ThrowUtils.throwIf(questionBankAddRequest == null, ErrorCode.PARAMS_ERROR);
-        // todo 在此处将实体类和 DTO 进行转换
+        //  在此处将实体类和 DTO 进行转换
         QuestionBank questionBank = new QuestionBank();
         BeanUtils.copyProperties(questionBankAddRequest, questionBank);
         // 数据校验
         questionBankService.validQuestionBank(questionBank, true);
-        // todo 填充默认值
+        //  填充默认值
         User loginUser = userService.getLoginUser(request);
         questionBank.setUserId(loginUser.getId());
         // 写入数据库
@@ -114,7 +114,7 @@ public class QuestionBankController {
         if (questionBankUpdateRequest == null || questionBankUpdateRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        // todo 在此处将实体类和 DTO 进行转换
+        //  在此处将实体类和 DTO 进行转换
         QuestionBank questionBank = new QuestionBank();
         BeanUtils.copyProperties(questionBankUpdateRequest, questionBank);
         // 数据校验
@@ -142,7 +142,7 @@ public class QuestionBankController {
             Long id = questionBankQueryRequest.getId();
             ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
 
-            // todo 取消注释开启 HotKey（须确保 HotKey 依赖被打进 jar 包）
+            //  取消注释开启 HotKey（须确保 HotKey 依赖被打进 jar 包）
 //        // 生成 key
 //        String key = "bank_detail_" + id;
 //        // 如果是热 key
@@ -173,7 +173,7 @@ public class QuestionBankController {
                 questionBankVO.setQuestionPage(questionVOPage);
             }
 
-            // todo 取消注释开启 HotKey（须确保 HotKey 依赖被打进 jar 包）
+            //  取消注释开启 HotKey（须确保 HotKey 依赖被打进 jar 包）
 //        // 设置本地缓存（如果不是热 key，这个方法不会设置缓存）
 //        JdHotKeyStore.smartSet(key, questionBankVO);
 
@@ -262,7 +262,7 @@ public class QuestionBankController {
         if (questionBankEditRequest == null || questionBankEditRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        // todo 在此处将实体类和 DTO 进行转换
+        //  在此处将实体类和 DTO 进行转换
         QuestionBank questionBank = new QuestionBank();
         BeanUtils.copyProperties(questionBankEditRequest, questionBank);
         // 数据校验
