@@ -1,6 +1,12 @@
 package com.yy.mianshiya.controller;
 
 import cn.hutool.json.JSONUtil;
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.EntryType;
+import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.Tracer;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.alibaba.csp.sentinel.slots.block.degrade.DegradeException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yy.mianshiya.annotation.AuthCheck;
 import com.yy.mianshiya.common.BaseResponse;
@@ -14,10 +20,12 @@ import com.yy.mianshiya.model.dto.question.QuestionAddRequest;
 import com.yy.mianshiya.model.dto.question.QuestionEditRequest;
 import com.yy.mianshiya.model.dto.question.QuestionQueryRequest;
 import com.yy.mianshiya.model.dto.question.QuestionUpdateRequest;
+import com.yy.mianshiya.model.dto.questionBank.QuestionBankQueryRequest;
 import com.yy.mianshiya.model.dto.questionBankQuestion.QuestionBankQuestionBatchAddRequest;
 import com.yy.mianshiya.model.dto.questionBankQuestion.QuestionBankQuestionBatchRemoveRequest;
 import com.yy.mianshiya.model.entity.Question;
 import com.yy.mianshiya.model.entity.User;
+import com.yy.mianshiya.model.vo.QuestionBankVO;
 import com.yy.mianshiya.model.vo.QuestionVO;
 import com.yy.mianshiya.service.QuestionBankQuestionService;
 import com.yy.mianshiya.service.QuestionService;
@@ -186,6 +194,70 @@ public class QuestionController {
                 questionService.getQueryWrapper(questionQueryRequest));
         // 获取封装类
         return ResultUtils.success(questionService.getQuestionVOPage(questionPage, request));
+    }
+
+    /**
+     * 分页获取题目信息列表（封装类）--限流版
+     *
+     * @param questionQueryRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/list/page/vo/sentinel")
+    public BaseResponse<Page<QuestionVO>> listQuestionVOByPageSentinel(@RequestBody QuestionQueryRequest questionQueryRequest,
+                                                               HttpServletRequest request) {
+        long current = questionQueryRequest.getCurrent();
+        long size = questionQueryRequest.getPageSize();
+        // 限制爬虫
+        ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
+
+        // 基于 IP 限流
+        String remoteAddr = request.getRemoteAddr();
+        Entry entry = null;
+        try  {
+            entry = SphU.entry("listQuestionVOByPage", EntryType.IN, 1, remoteAddr);
+            // 被保护的业务逻辑
+            // 查询数据库
+            Page<Question> questionPage = questionService.listQuestionByPage(questionQueryRequest);
+            // 获取封装类
+            return ResultUtils.success(questionService.getQuestionVOPage(questionPage, request));
+        } catch (Throwable  ex) {
+            //自定义业务异常
+            if (!BlockException.isBlockException(ex)) {
+                Tracer.trace(ex);
+                return ResultUtils.error(ErrorCode.SYSTEM_ERROR, "系统错误，请稍后再试");
+            }
+            // 资源访问阻止，被限流或被降级
+            if (ex instanceof DegradeException) {
+                return handleFallback(questionQueryRequest, request, ex);
+            }
+            // 限流操作
+            return ResultUtils.error(ErrorCode.SYSTEM_ERROR, "访问过于频繁，请稍后再试");
+        } finally {
+            if (entry != null) {
+                entry.exit(1, remoteAddr);
+            }
+        }
+    }
+
+    /**
+     * listQuestionBankVOByPage 降级操作：直接返回本地数据 只会抛出业务异常
+     */
+    public BaseResponse<Page<QuestionVO>> handleFallback(@RequestBody QuestionQueryRequest questionQueryRequest,
+                                                             HttpServletRequest request, Throwable ex) {
+        // 可以返回本地数据或空数据
+        return ResultUtils.success(null);
+    }
+
+    /**
+     * listQuestionBankVOByPage 流控操作
+     * 限流：提示“系统压力过大，请耐心等待”
+     */
+    public BaseResponse<Page<QuestionBankVO>> handleBlockException(@RequestBody QuestionBankQueryRequest questionBankQueryRequest,
+
+                                                                   HttpServletRequest request, BlockException ex) {
+        // 限流操作
+        return ResultUtils.error(ErrorCode.SYSTEM_ERROR, "访问过于频繁，请稍后再试");
     }
 
     /**

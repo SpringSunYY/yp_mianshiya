@@ -1,0 +1,1 @@
+[{"count":10000.0,"grade":0,"limitApp":"default","minRequestAmount":5,"resource":"listQuestionVOByPage","slowRatioThreshold":0.01,"statIntervalMs":1000,"timeWindow":30}]
