@@ -46,7 +46,7 @@ public class BlackIpUtils {
         synchronized (BlackIpUtils.class) {
             if (CollUtil.isNotEmpty(blackIpList)) {
                 // 注意构造参数的设置
-                BitMapBloomFilter bitMapBloomFilter = new BitMapBloomFilter(95850);
+                BitMapBloomFilter bitMapBloomFilter = new BitMapBloomFilter(1024);
                 for (String blackIp : blackIpList) {
                     bitMapBloomFilter.add(blackIp);
                 }
